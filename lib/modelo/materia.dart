@@ -12,10 +12,10 @@ class Materia {
 
   Map<String, dynamic> toJSON() {
     return {
-      'idmateria':idmateria,
-      'nombre':nombre,
-      'semestre':semestre,
-      'docente':docente
+      'idmateria': idmateria,
+      'nombre': nombre,
+      'semestre': semestre,
+      'docente': docente
     };
   }
 }
