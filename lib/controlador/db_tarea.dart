@@ -45,6 +45,20 @@ class DBTarea {
             Tarea(idtarea: 0, idmateria: '', f_entrega: '', descripcion: ''));
   }
 
+  static Future<Tarea> readOne(int idtarea) async {
+    final db = await Conexion.database;
+    List<Map<String, dynamic>> tarea =
+        await db.query('TAREA', where: 'IDTAREA=?', whereArgs: [idtarea]);
+    if (tarea.isNotEmpty) {
+      return Tarea(
+          idtarea: tarea[0]['IDTAREA'],
+          idmateria: tarea[0]['IDMATERIA'],
+          f_entrega: tarea[0]['F_ENTREGA'],
+          descripcion: tarea[0]['DESCRIPCION']);
+    }
+    return Tarea(idtarea: 0, idmateria: '', f_entrega: '', descripcion: '');
+  }
+
   static Future<int> update(Tarea tarea) async {
     final db = await Conexion.database;
     return db.update('TAREA', tarea.toJSON(),
