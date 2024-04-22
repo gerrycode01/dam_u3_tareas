@@ -6,6 +6,12 @@ import 'package:dam_u3_practica2_tarea/modelo/tarea.dart';
 class DBMateria {
   static Future<int> insert(Materia materia) async {
     final db = await Conexion.database;
+
+    Materia mat = await DBMateria.readOne(materia.idmateria);
+
+    if (mat.idmateria.isNotEmpty) {
+      return 0;
+    }
     return db.insert('MATERIA', materia.toJSON());
   }
 
@@ -28,6 +34,20 @@ class DBMateria {
             nombre: materias[0]['NOMBRE'],
             semestre: materias[0]['SEMESTRE'],
             docente: materias[0]['DOCENTE']));
+  }
+
+  static Future<Materia> readOne(String idmateria) async {
+    final db = await Conexion.database;
+    List<Map<String, dynamic>> materia =
+        await db.query('MATERIA', where: 'IDMATERIA=?', whereArgs: [idmateria]);
+    if (materia.isNotEmpty) {
+      return Materia(
+          idmateria: materia[0]['IDMATERIA'],
+          nombre: materia[0]['NOMBRE'],
+          semestre: materia[0]['SEMESTRE'],
+          docente: materia[0]['DOCENTE']);
+    }
+    return Materia(idmateria: '', nombre: '', semestre: '', docente: '');
   }
 
   static Future<int> update(Materia materia) async {
