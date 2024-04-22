@@ -14,36 +14,34 @@ class DBTarea {
     if (tareas.isNotEmpty) {
       return List.generate(
           tareas.length,
-              (index) =>
-              Tarea(
-                  idtarea: tareas[index]['IDTAREA'],
-                  idmateria: tareas[index]['IDMATERIA'],
-                  f_entrega: tareas[index]['F_ENTREGA'],
-                  descripcion: tareas[index]['DESCRIPCION']));
+          (index) => Tarea(
+              idtarea: tareas[index]['IDTAREA'],
+              idmateria: tareas[index]['IDMATERIA'],
+              f_entrega: tareas[index]['F_ENTREGA'],
+              descripcion: tareas[index]['DESCRIPCION']));
     }
     return List.generate(
         0,
-            (index) =>
+        (index) =>
             Tarea(idtarea: 0, idmateria: '', f_entrega: '', descripcion: ''));
   }
 
   static Future<List<Tarea>> readAllWhere(String idmateria) async {
     final db = await Conexion.database;
     List<Map<String, dynamic>> tareas =
-    await db.query('TAREA', where: 'IDMATERIA=?', whereArgs: [idmateria]);
+        await db.query('TAREA', where: 'IDMATERIA=?', whereArgs: [idmateria]);
     if (tareas.isNotEmpty) {
       return List.generate(
           tareas.length,
-              (index) =>
-              Tarea(
-                  idtarea: tareas[index]['IDTAREA'],
-                  idmateria: tareas[index]['IDMATERIA'],
-                  f_entrega: tareas[index]['F_ENTREGA'],
-                  descripcion: tareas[index]['DESCRIPCION']));
+          (index) => Tarea(
+              idtarea: tareas[index]['IDTAREA'],
+              idmateria: tareas[index]['IDMATERIA'],
+              f_entrega: tareas[index]['F_ENTREGA'],
+              descripcion: tareas[index]['DESCRIPCION']));
     }
     return List.generate(
         0,
-            (index) =>
+        (index) =>
             Tarea(idtarea: 0, idmateria: '', f_entrega: '', descripcion: ''));
   }
 
@@ -76,18 +74,19 @@ class DBTarea {
     if (materiasTareas.isNotEmpty) {
       return List.generate(
           materiasTareas.length,
-              (index) =>
-              MateriaTarea(
-                  idmateria: materiasTareas[index]['IDMATERIA'],
-                  nombre: materiasTareas[index]['NOMBRE'],
-                  semestre: materiasTareas[index]['SEMESTRE'],
-                  docente: materiasTareas[index]['DOCENTE'],
-                  idtarea: materiasTareas[index]['IDTAREA'],
-                  f_entrega: materiasTareas[index]['F_ENTREGA'],
-                  descripcion: materiasTareas[index]['DESCRIPCION']));
+          (index) => MateriaTarea(
+              idmateria: materiasTareas[index]['IDMATERIA'],
+              nombre: materiasTareas[index]['NOMBRE'],
+              semestre: materiasTareas[index]['SEMESTRE'],
+              docente: materiasTareas[index]['DOCENTE'],
+              idtarea: materiasTareas[index]['IDTAREA'],
+              f_entrega: materiasTareas[index]['F_ENTREGA'],
+              descripcion: materiasTareas[index]['DESCRIPCION']));
     }
-    return List.generate(0, (index) =>
-        MateriaTarea(idmateria: '',
+    return List.generate(
+        0,
+        (index) => MateriaTarea(
+            idmateria: '',
             nombre: '',
             semestre: '',
             docente: '',
