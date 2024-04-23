@@ -1,5 +1,5 @@
 import 'package:dam_u3_practica2_tarea/vistas/Materia/VistaMateria.dart';
-import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/vistaTarea.dart';
+import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/vista_tarea.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
