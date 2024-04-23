@@ -12,7 +12,6 @@ class CrearTarea extends StatefulWidget {
 }
 
 class _CrearTareaState extends State<CrearTarea> {
-  List<Tarea> tareas = [];
   List<Materia> materias = [];
   String? _materiaseleccionado;
   final _fechaentrega = TextEditingController();
@@ -71,7 +70,8 @@ class _CrearTareaState extends State<CrearTarea> {
             controller: _descripcion,
             decoration: InputDecoration(
               hintText: 'Descripcion de  tarea',
-              hintStyle: TextStyle(color: negro.withOpacity(0.6)),
+              hintStyle: TextStyle(color: negro.withOpacity(0.6)
+              ),
               filled: true,
               fillColor: blanco,
               border: OutlineInputBorder(
@@ -79,23 +79,37 @@ class _CrearTareaState extends State<CrearTarea> {
                 borderSide: BorderSide.none,
               ),
               prefixIcon: Icon(
-                  Icons.confirmation_number, color: Colors.pink.shade900),
+                  Icons.description, color: Colors.pink.shade900),
             ),
           ),
           const SizedBox(height: 20),
           TextField(
             controller: _fechaentrega,
             decoration: InputDecoration(
-              hintText: 'Selecciona una fecha',
-              hintStyle: TextStyle(color: negro.withOpacity(0.6)),
+              hintText: 'Fecha',
+              hintStyle: TextStyle(color: negro.withOpacity(0.6)
+              ),
               filled: true,
               fillColor: blanco,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
-              prefixIcon: Icon(Icons.book_online, color: Colors.pink.shade900),
+              prefixIcon: Icon(
+                  Icons.date_range, color: Colors.pink.shade900),
             ),
+            onTap: () async {
+              // Mostrar picker de fecha
+              DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+              );
+              if (pickedDate != null) {
+                _fechaentrega.text = pickedDate.toString().substring(0, 10); // Formatea la fecha como yyyy-mm-dd
+              }
+            },
           ),
           const SizedBox(height: 20),
           ElevatedButton(
@@ -107,15 +121,15 @@ class _CrearTareaState extends State<CrearTarea> {
             ),
             onPressed: () {
               if (_descripcion == null) {
-                mensaje('REGISTRA UN ID A LA MATERIA POR FAVOR', Colors.red);
+                mensaje('REGISTRA LA DESCRIPCION', Colors.red);
                 return;
               }
               if (_fechaentrega == null) {
-                mensaje('REGISTRA EL NOMBRE UNA MATERIA', Colors.red);
+                mensaje('REGISTRA LA FECHA', Colors.red);
                 return;
               }
-              if (_materiaseleccionado == null) {
-                mensaje('REGISTRA UN DOCENTE POR FAVOR', Colors.red);
+              if (idMateria == null) {
+                mensaje('REGISTRA UNA MATERIA POR FAVOR', Colors.red);
                 return;
               } else {
                 Tarea t = Tarea(

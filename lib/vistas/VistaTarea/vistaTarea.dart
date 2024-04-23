@@ -83,7 +83,7 @@ class _VistaTareaState extends State<VistaTarea> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        tareas[index].descripcion,
+                        tareas[index].nombre,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -95,7 +95,7 @@ class _VistaTareaState extends State<VistaTarea> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        'Carrera: ${tareas[index].f_entrega}',
+                        'Fecha entrega: ${tareas[index].docente}',
                         style: TextStyle(fontSize: 14),
                         textAlign: TextAlign.center,
                       ),
@@ -103,7 +103,7 @@ class _VistaTareaState extends State<VistaTarea> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        'Semestre: ${tareas[index].docente}',
+                        'Docente: ${tareas[index].docente}',
                         style: TextStyle(fontSize: 11),
                         textAlign: TextAlign.center,
                       ),
