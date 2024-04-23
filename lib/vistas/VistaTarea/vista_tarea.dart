@@ -1,5 +1,6 @@
 import 'package:dam_u3_practica2_tarea/controlador/db_tarea.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia_tarea.dart';
+import 'package:dam_u3_practica2_tarea/vistas/Materia/crearMateria.dart';
 import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/crear_tarea.dart';
 import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/editar_tarea.dart';
 import 'package:flutter/material.dart';
@@ -85,17 +86,18 @@ class _VistaTareaState extends State<VistaTarea> {
                         tareas[index].descripcion,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 15,
                             color: Colors.pink.shade900
                         ),
                         textAlign: TextAlign.center,
                       ),
                     ),
+                    SizedBox(height: 5,),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        'Fecha entrega: ${tareas[index].docente}',
-                        style: const TextStyle(fontSize: 14),
+                        'Fecha entrega: ${tareas[index].f_entrega}',
+                        style: const TextStyle(fontSize: 10),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -103,6 +105,22 @@ class _VistaTareaState extends State<VistaTarea> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'Docente: ${tareas[index].docente}',
+                        style: const TextStyle(fontSize: 11),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'Materia: ${tareas[index].nombre}',
+                        style: const TextStyle(fontSize: 11),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'Semestre: ${tareas[index].semestre}',
                         style: const TextStyle(fontSize: 11),
                         textAlign: TextAlign.center,
                       ),

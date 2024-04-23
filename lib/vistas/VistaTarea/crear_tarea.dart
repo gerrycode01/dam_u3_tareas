@@ -120,11 +120,11 @@ class _CrearTareaState extends State<CrearTarea> {
               ),
             ),
             onPressed: () {
-              if (_descripcion == null) {
+              if (_descripcion.text.isEmpty) {
                 mensaje('REGISTRA LA DESCRIPCION', Colors.red);
                 return;
               }
-              if (_fechaentrega == null) {
+              if (_fechaentrega.text.isEmpty) {
                 mensaje('REGISTRA LA FECHA', Colors.red);
                 return;
               }
@@ -134,18 +134,18 @@ class _CrearTareaState extends State<CrearTarea> {
               } else {
                 Tarea t = Tarea(
                     idtarea: 0,
-                    idmateria: idMateria.toString(),
-                    f_entrega: _fechaentrega.toString(),
-                    descripcion: _descripcion.toString()
+                    idmateria: idMateria!,
+                    f_entrega: _fechaentrega.text,
+                    descripcion: _descripcion.text
                 );
                 DBTarea.insert(t).then((value) {
                   if (value == 0) {
                     mensaje('INSERCION INCORRECTA', Colors.red);
                     return;
                   }
-                  mensaje("SE HA INSERTADO EL PROFESOR", Colors.green);
+                  mensaje("SE HA INSERTADO LA TAREA", Colors.green);
+                  Navigator.pop(context);
                 });
-                Navigator.pop(context);
               }
             },
             child: const Text('Agregar'),
