@@ -36,4 +36,15 @@ class Conexion {
       );
     ''');
   }
+
+  static List<String> semestres = [
+    'AGO-DIC2024',
+    'ENE-JUN2024',
+    'AGO-DIC2023',
+    'ENE-JUN2023',
+    'AGO-DIC2022',
+    'ENE-JUN2022'
+  ];
+
+
 }

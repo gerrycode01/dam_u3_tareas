@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Tarea {
   int idtarea; //llave primaria autoincrementable
   String idmateria; //llave foranea
@@ -12,10 +14,24 @@ class Tarea {
 
   Map<String, dynamic> toJSON() {
     return {
-      idmateria:idmateria,
-      idmateria:idmateria,
-      f_entrega:f_entrega,
-      descripcion:descripcion
+      //'idtarea':idtarea,
+      'idmateria':idmateria,
+      'f_entrega':f_entrega,
+      'descripcion':descripcion
     };
+  }
+
+  DateTime get fechaEntrega {
+    return DateFormat('yyyy-MM-dd').parse(f_entrega);
+  }
+
+  // Método estático para formatear DateTime a String
+  /*static String formatFecha(DateTime fecha) {
+    return DateFormat('yyyy-MM-dd').format(fecha);
+  }*/
+
+  List<Tarea> ordenarTareasPorFecha(List<Tarea> tareas) {
+    tareas.sort((a, b) => a.fechaEntrega.compareTo(b.fechaEntrega));
+    return tareas;
   }
 }
