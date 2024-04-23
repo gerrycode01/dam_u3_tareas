@@ -1,4 +1,4 @@
-import 'package:dam_u3_practica2_tarea/vistas/Materia/editarMateria.dart';
+import 'package:dam_u3_practica2_tarea/vistas/Materia/editar_materia.dart';
 import 'package:flutter/material.dart';
 import 'package:dam_u3_practica2_tarea/controlador/db_materia.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia.dart';
@@ -22,18 +22,18 @@ class _VistaMateriaState extends State<VistaMateria> {
 
   void cargarLista() async {
     List<Materia> listaMaterias = await DBMateria.readAll();
-    if (mounted) {
-      setState(() {
-        materias = listaMaterias;
-      });
-    }
+    setState(() {
+      materias = listaMaterias;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    cargarLista();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestión de Materias', style: TextStyle(color: Colors.white)),
+        title: const Text('Gestión de Materias',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.pink.shade900,
         actions: <Widget>[
           IconButton(
@@ -49,7 +49,7 @@ class _VistaMateriaState extends State<VistaMateria> {
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1.0,
           crossAxisSpacing: 10,
@@ -58,7 +58,8 @@ class _VistaMateriaState extends State<VistaMateria> {
         itemCount: materias.length,
         itemBuilder: (context, index) {
           return Dismissible(
-            key: UniqueKey(), // Se recomienda usar UniqueKey para evitar problemas con el estado
+            key: UniqueKey(),
+            // Se recomienda usar UniqueKey para evitar problemas con el estado
             onDismissed: (direction) {
               DBMateria.delete(materias[index]).then((value) {
                 mensaje("Materia eliminada correctamente", Colors.red);
@@ -67,29 +68,35 @@ class _VistaMateriaState extends State<VistaMateria> {
             },
             background: Container(color: Colors.red),
             child: Card(
-              clipBehavior: Clip.antiAlias, // Añade esto para un mejor efecto visual al deslizar
+              clipBehavior: Clip.antiAlias,
+              // Añade esto para un mejor efecto visual al deslizar
               elevation: 5,
               child: InkWell(
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const editarMateria()));
+                          builder: (context) => EditarMateria(
+                                idmateria: materias[index].idmateria,
+                              )));
                 }, // Agrega una acción al tocar la tarjeta
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch, // Alineación horizontal
-                  mainAxisAlignment: MainAxisAlignment.start, // Alineación vertical
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  // Alineación horizontal
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  // Alineación vertical
                   children: [
-                    SizedBox(height: 35,),
+                    const SizedBox(
+                      height: 35,
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         materias[index].nombre,
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.pink.shade900
-                        ),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.pink.shade900),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -97,7 +104,7 @@ class _VistaMateriaState extends State<VistaMateria> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'Carrera: ${materias[index].docente}',
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -105,7 +112,7 @@ class _VistaMateriaState extends State<VistaMateria> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'Semestre: ${materias[index].semestre}',
-                        style: TextStyle(fontSize: 11),
+                        style: const TextStyle(fontSize: 11),
                         textAlign: TextAlign.center,
                       ),
                     ),

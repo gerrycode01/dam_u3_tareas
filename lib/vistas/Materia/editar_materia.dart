@@ -3,16 +3,18 @@ import 'package:dam_u3_practica2_tarea/controlador/db_materia.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia.dart';
 import 'package:flutter/material.dart';
 
-class editarMateria extends StatefulWidget {
-  const editarMateria({super.key});
+class EditarMateria extends StatefulWidget {
+  const EditarMateria({super.key, required this.idmateria});
+
+  final String idmateria;
 
   @override
-  State<editarMateria> createState() => _editarMateriaState();
+  State<EditarMateria> createState() => _EditarMateriaState();
 }
 
-class _editarMateriaState extends State<editarMateria> {
-  List<Materia> materias = [];
-  final _idmateria = TextEditingController();
+class _EditarMateriaState extends State<EditarMateria> {
+  Materia materia =
+      Materia(idmateria: '', nombre: '', semestre: '', docente: '');
   final _nombre = TextEditingController();
   final _docente = TextEditingController();
   String? _semestreseleccionado;
@@ -29,39 +31,29 @@ class _editarMateriaState extends State<editarMateria> {
   }
 
   void cargarLista() async {
-    List<Materia> listaMaterias = await DBMateria.readAll();
+    Materia materia = await DBMateria.readOne(widget.idmateria);
     setState(() {
-      materias = listaMaterias;
+      this.materia = materia;
+      _nombre.text = materia.nombre;
+      _docente.text = materia.docente;
+      _semestreseleccionado = materia.semestre;
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Editar Materia", style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "Editar Materia",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: Colors.pink.shade900,
       ),
       body: ListView(
         padding: const EdgeInsets.all(30),
         children: [
-          TextField(
-            controller: _idmateria,
-            decoration: InputDecoration(
-              hintText: 'Id Materia',
-              hintStyle: TextStyle(color: negro.withOpacity(0.6)),
-              filled: true,
-              fillColor: blanco,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              prefixIcon: Icon(
-                  Icons.confirmation_number, color: Colors.pink.shade900),
-            ),
-          ),
-          const SizedBox(height: 20),
           TextField(
             controller: _nombre,
             decoration: InputDecoration(
@@ -89,13 +81,13 @@ class _editarMateriaState extends State<editarMateria> {
             value: _semestreseleccionado,
             hint: Text('Seleccione un semestre',
                 style: TextStyle(color: negro.withOpacity(0.6))),
-            onChanged: (String? newValue) {
+            onChanged: (newValue) {
               setState(() {
-                _semestreseleccionado = newValue;
+                _semestreseleccionado = newValue!;
               });
             },
-            items: Conexion.semestres.map<DropdownMenuItem<String>>((
-                String value) {
+            items: Conexion.semestres
+                .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value, style: TextStyle(color: negro)),
@@ -120,45 +112,41 @@ class _editarMateriaState extends State<editarMateria> {
           const SizedBox(height: 20),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              foregroundColor: blanco, backgroundColor: Colors.pink.shade900,
+              foregroundColor: blanco,
+              backgroundColor: Colors.pink.shade900,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
             onPressed: () {
-              if (_idmateria == null) {
-                mensaje('REGISTRA UN ID A LA MATERIA POR FAVOR', Colors.red);
-                return;
-              }
-              if (_nombre == null) {
+              if (_nombre.text.isEmpty) {
                 mensaje('REGISTRA EL NOMBRE UNA MATERIA', Colors.red);
                 return;
               }
-              if (_docente == null) {
+              if (_docente.text.isEmpty) {
                 mensaje('REGISTRA UN DOCENTE POR FAVOR', Colors.red);
                 return;
               }
               if (_semestreseleccionado == null) {
                 mensaje("Por favor, seleccione una carrera antes de agregar.",
                     Colors.red);
-              } else {
-                Materia ma = Materia(
-                    idmateria: _idmateria.text,
-                    nombre: _nombre.text,
-                    semestre: _semestreseleccionado!,
-                    docente: _docente.text
-                );
-                DBMateria.insert(ma).then((value) {
-                  if (value == 0) {
-                    mensaje('INSERCION INCORRECTA', Colors.red);
-                    return;
-                  }
-                  mensaje("SE HA INSERTADO EL PROFESOR", Colors.green);
-                });
-                Navigator.pop(context);
+                return;
               }
+              Materia ma = Materia(
+                  idmateria: widget.idmateria,
+                  nombre: _nombre.text,
+                  semestre: _semestreseleccionado.toString(),
+                  docente: _docente.text);
+              DBMateria.update(ma).then((value) {
+                if (value == 0) {
+                  mensaje('ERROR AL ACTUALIZAR', Colors.red);
+                  return;
+                }
+                mensaje("CAMBIOS REGISTRADOS", Colors.green);
+              });
+              Navigator.pop(context);
             },
-            child: const Text('Agregar'),
+            child: const Text('Aceptar'),
           ),
           const SizedBox(height: 10),
           TextButton(
@@ -179,10 +167,11 @@ class _editarMateriaState extends State<editarMateria> {
       ),
     );
   }
+
   void mensaje(String s, Color color) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(s), backgroundColor: color,
-        )
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(s),
+      backgroundColor: color,
+    ));
   }
 }
