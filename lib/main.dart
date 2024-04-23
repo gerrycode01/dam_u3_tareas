@@ -1,3 +1,5 @@
+import 'package:dam_u3_practica2_tarea/vistas/Materia/VistaMateria.dart';
+import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/vistaTarea.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: Text("Sistema de Control de Tareas1",
+        title: Text("Sistema de Control de Tareas",
           style: TextStyle(
               color: Colors.white,
               fontSize: 17,
@@ -76,10 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               onTap: () {
-                /*Navigator.push(
+                Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const VistaProfesor()));*/
+                        builder: (context) => const VistaMateria()));
               },
             ),
             ListTile(
@@ -92,10 +94,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               onTap: () {
-                /*Navigator.push(
+                Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const VistaProfesor()));*/
+                        builder: (context) => const VistaTarea()));
               },
             ),
           ],
