@@ -85,7 +85,7 @@ class _VistaMateriaState extends State<VistaMateria> {
                         ),
                         Text(
                           'Semestre: ${materias[index].semestre}',
-                          style: const TextStyle(fontSize: 11),
+                          style: const TextStyle(fontSize: 10),
                           textAlign: TextAlign.center,
                         ),
                       ],

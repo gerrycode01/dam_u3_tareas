@@ -1,3 +1,5 @@
+import 'package:dam_u3_practica2_tarea/query1.dart';
+import 'package:dam_u3_practica2_tarea/query2.dart';
 import 'package:dam_u3_practica2_tarea/vistas/Materia/VistaMateria.dart';
 import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/vista_tarea.dart';
 import 'package:flutter/cupertino.dart';
@@ -124,11 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _dinamico() {
     switch (_currentIndex) {
       case 1:
-        return Text("data");
-      case 2:
-        return Text("data");
+        return Query2();
       default:
-        return const Text("data");
+        return Query1();
     }
   }
 }
