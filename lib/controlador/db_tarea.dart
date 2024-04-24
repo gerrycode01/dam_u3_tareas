@@ -1,6 +1,7 @@
 import 'package:dam_u3_practica2_tarea/controlador/conexion.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia_tarea.dart';
 import 'package:dam_u3_practica2_tarea/modelo/tarea.dart';
+import 'package:intl/intl.dart';
 
 class DBTarea {
   static Future<int> insert(Tarea tarea) async {
@@ -107,5 +108,15 @@ class DBTarea {
             idtarea: 0,
             f_entrega: '',
             descripcion: ''));
+  }
+
+  static List<Tarea> ordenarTareasPorFecha(List<Tarea> tareas) {
+    tareas.sort((a, b) => a.fechaEntrega.compareTo(b.fechaEntrega));
+    return tareas;
+  }
+
+  // Método estático para formatear DateTime a String
+  static String formatFecha(DateTime fecha) {
+    return DateFormat('yyyy-MM-dd').format(fecha);
   }
 }

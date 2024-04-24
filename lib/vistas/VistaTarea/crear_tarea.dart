@@ -5,7 +5,8 @@ import 'package:dam_u3_practica2_tarea/modelo/tarea.dart';
 import 'package:flutter/material.dart';
 
 class CrearTarea extends StatefulWidget {
-  const CrearTarea({super.key});
+  const CrearTarea({super.key, required this.idmateria});
+  final String idmateria;
 
   @override
   State<CrearTarea> createState() => _CrearTareaState();
@@ -13,7 +14,6 @@ class CrearTarea extends StatefulWidget {
 
 class _CrearTareaState extends State<CrearTarea> {
   List<Materia> materias = [];
-  String? _materiaseleccionado;
   final _fechaentrega = TextEditingController();
   final _descripcion = TextEditingController();
   String? idMateria;
@@ -30,15 +30,18 @@ class _CrearTareaState extends State<CrearTarea> {
 
   void cargarLista() async {
     List<Materia> listaMaterias = await DBMateria.readAll();
+    if(widget.idmateria.isNotEmpty) idMateria = widget.idmateria;
+
     setState(() {
       materias = listaMaterias;
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Registrar Tarea", style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: Colors.pink.shade900,

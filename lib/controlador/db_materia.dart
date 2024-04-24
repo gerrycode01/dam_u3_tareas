@@ -38,11 +38,12 @@ class DBMateria {
 
   static Future<List<Materia>> readAllWhere(String semestre) async {
     final db = await Conexion.database;
-    List<Map<String, dynamic>> materias = await db.query('MATERIA', where: 'SEMESTRE=?', whereArgs: [semestre]);
+    List<Map<String, dynamic>> materias =
+        await db.query('MATERIA', where: 'SEMESTRE=?', whereArgs: [semestre]);
     if (materias.isNotEmpty) {
       return List.generate(
           materias.length,
-              (index) => Materia(
+          (index) => Materia(
               idmateria: materias[index]['IDMATERIA'],
               nombre: materias[index]['NOMBRE'],
               semestre: materias[index]['SEMESTRE'],
@@ -50,7 +51,7 @@ class DBMateria {
     }
     return List.generate(
         0,
-            (index) => Materia(
+        (index) => Materia(
             idmateria: materias[0]['IDMATERIA'],
             nombre: materias[0]['NOMBRE'],
             semestre: materias[0]['SEMESTRE'],

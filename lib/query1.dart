@@ -4,7 +4,7 @@ import 'package:dam_u3_practica2_tarea/controlador/db_materia.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia.dart';
 
 class Query1 extends StatefulWidget {
-  const Query1({Key? key}) : super(key: key);
+  const Query1({super.key});
 
   @override
   State<Query1> createState() => _Query1State();
@@ -20,12 +20,11 @@ class _Query1State extends State<Query1> {
   }
 
   void cargarLista() async {
-    List<Materia> listaMaterias = await DBMateria.readAllWhere(Conexion.semestres[1]);
-    if (mounted) {
-      setState(() {
-        materias = listaMaterias;
-      });
-    }
+    List<Materia> listaMaterias =
+        await DBMateria.readAllWhere(Conexion.semestres[1]);
+    setState(() {
+      materias = listaMaterias;
+    });
   }
 
   @override
@@ -33,7 +32,10 @@ class _Query1State extends State<Query1> {
     cargarLista();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Materias del Semestre',style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Materias del Semestre',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.pink.shade900,
         centerTitle: true,
       ),

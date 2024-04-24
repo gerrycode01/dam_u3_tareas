@@ -40,8 +40,11 @@ class _VistaTareaState extends State<VistaTarea> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CrearTarea()),
-              );
+                MaterialPageRoute(
+                    builder: (context) => const CrearTarea(
+                          idmateria: '',
+                        )),
+              ).then((value) => cargarLista());
             },
           ),
         ],
@@ -99,7 +102,7 @@ class _VistaTareaState extends State<VistaTarea> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Padding(

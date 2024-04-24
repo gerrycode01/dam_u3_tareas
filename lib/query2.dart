@@ -1,8 +1,8 @@
+import 'package:dam_u3_practica2_tarea/modelo/tarea.dart';
 import 'package:flutter/material.dart';
 import 'package:dam_u3_practica2_tarea/controlador/db_tarea.dart';
-import 'package:dam_u3_practica2_tarea/modelo/materia_tarea.dart';
 import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/crear_tarea.dart';
-import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/editar_tarea.dart';
+import 'package:intl/intl.dart';
 
 class Query2 extends StatefulWidget {
   const Query2({super.key});
@@ -12,7 +12,7 @@ class Query2 extends StatefulWidget {
 }
 
 class _Query2State extends State<Query2> {
-  List<MateriaTarea> tareas = [];
+  List<Tarea> tareas = [];
 
   @override
   void initState() {
@@ -21,17 +21,25 @@ class _Query2State extends State<Query2> {
   }
 
   void cargarLista() async {
-    List<MateriaTarea> listatareas = await DBTarea.readAllWithMateria();
+    List<Tarea> listatareas = await DBTarea.readAll();
+    listatareas = DBTarea.ordenarTareasPorFecha(listatareas);
+    eliminarTareasAnteriores(listatareas, DBTarea.formatFecha(DateTime.now()));
     setState(() {
       tareas = listatareas;
     });
+  }
+
+  void eliminarTareasAnteriores(List<Tarea> tareas, String fechaLimite) {
+    DateTime fechaLimiteDateTime = DateFormat('yyyy-MM-dd').parse(fechaLimite);
+    tareas.removeWhere((tarea) => tarea.fechaEntrega.isBefore(fechaLimiteDateTime));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestión de Tareas', style: TextStyle(color: Colors.white)),
+        title: const Text('Gestión de Tareas',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.pink.shade900,
         actions: <Widget>[
           IconButton(
@@ -39,7 +47,10 @@ class _Query2State extends State<Query2> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CrearTarea()),
+                MaterialPageRoute(
+                    builder: (context) => const CrearTarea(
+                          idmateria: '',
+                        )),
               ).then((_) => cargarLista());
             },
           ),
