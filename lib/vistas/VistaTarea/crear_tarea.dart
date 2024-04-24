@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class CrearTarea extends StatefulWidget {
   const CrearTarea({super.key, required this.idmateria});
+
   final String idmateria;
 
   @override
@@ -30,7 +31,7 @@ class _CrearTareaState extends State<CrearTarea> {
 
   void cargarLista() async {
     List<Materia> listaMaterias = await DBMateria.readAll();
-    if(widget.idmateria.isNotEmpty) idMateria = widget.idmateria;
+    if (widget.idmateria.isNotEmpty) idMateria = widget.idmateria;
 
     setState(() {
       materias = listaMaterias;
@@ -42,7 +43,9 @@ class _CrearTareaState extends State<CrearTarea> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Registrar Tarea", style: TextStyle(color: Colors.white),),
+          "Registrar Tarea",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: Colors.pink.shade900,
       ),
@@ -50,6 +53,7 @@ class _CrearTareaState extends State<CrearTarea> {
         padding: const EdgeInsets.all(30),
         children: [
           DropdownButtonFormField(
+              value: idMateria,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -73,16 +77,14 @@ class _CrearTareaState extends State<CrearTarea> {
             controller: _descripcion,
             decoration: InputDecoration(
               hintText: 'Descripcion de  tarea',
-              hintStyle: TextStyle(color: negro.withOpacity(0.6)
-              ),
+              hintStyle: TextStyle(color: negro.withOpacity(0.6)),
               filled: true,
               fillColor: blanco,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
-              prefixIcon: Icon(
-                  Icons.description, color: Colors.pink.shade900),
+              prefixIcon: Icon(Icons.description, color: Colors.pink.shade900),
             ),
           ),
           const SizedBox(height: 20),
@@ -90,16 +92,14 @@ class _CrearTareaState extends State<CrearTarea> {
             controller: _fechaentrega,
             decoration: InputDecoration(
               hintText: 'Fecha',
-              hintStyle: TextStyle(color: negro.withOpacity(0.6)
-              ),
+              hintStyle: TextStyle(color: negro.withOpacity(0.6)),
               filled: true,
               fillColor: blanco,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
-              prefixIcon: Icon(
-                  Icons.date_range, color: Colors.pink.shade900),
+              prefixIcon: Icon(Icons.date_range, color: Colors.pink.shade900),
             ),
             onTap: () async {
               // Mostrar picker de fecha
@@ -110,14 +110,17 @@ class _CrearTareaState extends State<CrearTarea> {
                 lastDate: DateTime(2100),
               );
               if (pickedDate != null) {
-                _fechaentrega.text = pickedDate.toString().substring(0, 10); // Formatea la fecha como yyyy-mm-dd
+                _fechaentrega.text = pickedDate
+                    .toString()
+                    .substring(0, 10); // Formatea la fecha como yyyy-mm-dd
               }
             },
           ),
           const SizedBox(height: 20),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              foregroundColor: blanco, backgroundColor: Colors.pink.shade900,
+              foregroundColor: blanco,
+              backgroundColor: Colors.pink.shade900,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -139,8 +142,7 @@ class _CrearTareaState extends State<CrearTarea> {
                     idtarea: 0,
                     idmateria: idMateria!,
                     f_entrega: _fechaentrega.text,
-                    descripcion: _descripcion.text
-                );
+                    descripcion: _descripcion.text);
                 DBTarea.insert(t).then((value) {
                   if (value == 0) {
                     mensaje('INSERCION INCORRECTA', Colors.red);
@@ -174,9 +176,9 @@ class _CrearTareaState extends State<CrearTarea> {
   }
 
   void mensaje(String s, Color color) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(s), backgroundColor: color,
-        )
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(s),
+      backgroundColor: color,
+    ));
   }
 }
