@@ -32,8 +32,7 @@ class _VistaMateriaState extends State<VistaMateria> {
     cargarLista();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestión de Materias',
-            style: TextStyle(color: Colors.white)),
+        title: const Text('Gestión de Materias', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.pink.shade900,
         actions: <Widget>[
           IconButton(
@@ -57,73 +56,106 @@ class _VistaMateriaState extends State<VistaMateria> {
         ),
         itemCount: materias.length,
         itemBuilder: (context, index) {
-          return Dismissible(
-            key: UniqueKey(),
-            // Se recomienda usar UniqueKey para evitar problemas con el estado
-            onDismissed: (direction) {
-              DBMateria.delete(materias[index]).then((value) {
-                mensaje("Materia eliminada correctamente", Colors.red);
-                cargarLista();
-              });
-            },
-            background: Container(color: Colors.red),
-            child: Card(
-              clipBehavior: Clip.antiAlias,
-              // Añade esto para un mejor efecto visual al deslizar
-              elevation: 5,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditarMateria(
-                                idmateria: materias[index].idmateria,
-                              )));
-                }, // Agrega una acción al tocar la tarjeta
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  // Alineación horizontal
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  // Alineación vertical
-                  children: [
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        materias[index].nombre,
-                        style: TextStyle(
+          return Card(
+            clipBehavior: Clip.antiAlias,
+            elevation: 5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          materias[index].nombre,
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.pink.shade900),
-                        textAlign: TextAlign.center,
-                      ),
+                            color: Colors.pink.shade900,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          'Docente: ${materias[index].docente}',
+                          style: const TextStyle(fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          'Semestre: ${materias[index].semestre}',
+                          style: const TextStyle(fontSize: 11),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        'Carrera: ${materias[index].docente}',
-                        style: const TextStyle(fontSize: 14),
-                        textAlign: TextAlign.center,
-                      ),
+                  ),
+                ),
+                ButtonBar(
+                  alignment: MainAxisAlignment.spaceEvenly,
+                  buttonHeight: 52.0,
+                  buttonMinWidth: 90.0,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.edit, color: Colors.pink.shade900),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditarMateria(
+                              idmateria: materias[index].idmateria,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        'Semestre: ${materias[index].semestre}',
-                        style: const TextStyle(fontSize: 11),
-                        textAlign: TextAlign.center,
-                      ),
+                    IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        // Mostrar AlertDialog para confirmar
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Confirmar'),
+                              content: const Text('¿Estás seguro de que quieres eliminar esta materia?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Cancelar'),
+                                  onPressed: () {
+                                    // Simplemente cierra el diálogo
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Eliminar'),
+                                  onPressed: () {
+                                    // Eliminar la materia y actualizar la lista
+                                    DBMateria.delete(materias[index]).then((value) {
+                                      mensaje("Materia eliminada correctamente", Colors.red);
+                                      cargarLista();
+                                      // Cerrar el diálogo
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                     ),
+
                   ],
                 ),
-              ),
+              ],
             ),
           );
         },
       ),
     );
+
   }
 
   void mensaje(String texto, Color color) {
