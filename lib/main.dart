@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: _currentIndex,
-        selectedItemColor: Colors.deepOrange,
+        selectedItemColor: Colors.pink.shade900,
         onTap: _onItemTapped,
       ),
     );

@@ -56,102 +56,88 @@ class _VistaMateriaState extends State<VistaMateria> {
         ),
         itemCount: materias.length,
         itemBuilder: (context, index) {
-          return Card(
-            clipBehavior: Clip.antiAlias,
-            elevation: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          materias[index].nombre,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.pink.shade900,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          'Docente: ${materias[index].docente}',
-                          style: const TextStyle(fontSize: 14),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          'Semestre: ${materias[index].semestre}',
-                          style: const TextStyle(fontSize: 10),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+          return Dismissible(
+            key: Key(materias[index].idmateria), // Utiliza el id de la materia como clave única
+            direction: DismissDirection.endToStart, // Solo permite deslizar en una dirección
+            background: Container(
+              color: Colors.red,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: const Icon(Icons.delete, color: Colors.white),
+            ),
+            onDismissed: (direction) {
+              // Lógica de eliminación de la materia
+              DBMateria.delete(materias[index]).then((value) {
+                mensaje("Materia eliminada correctamente", Colors.red);
+                cargarLista();
+              });
+            },
+            child: InkWell(
+              onTap: () {
+                // Navegación a la pantalla de edición de la materia
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditarMateria(
+                      idmateria: materias[index].idmateria,
                     ),
                   ),
-                ),
-                ButtonBar(
-                  alignment: MainAxisAlignment.spaceEvenly,
-                  buttonHeight: 52.0,
-                  buttonMinWidth: 90.0,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.edit, color: Colors.pink.shade900),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditarMateria(
-                              idmateria: materias[index].idmateria,
-                            ),
+                ).then((_) => cargarLista()); // Asegura recargar la lista al volver
+              },
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                elevation: 5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 3.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.pink.shade100,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
                           ),
-                        );
-                      },
+                        ),
+                        child: Icon(
+                          Icons.school,
+                          size: 40.0,
+                          color: Colors.pink.shade600,
+                        ),
+                      ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        // Mostrar AlertDialog para confirmar
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Confirmar'),
-                              content: const Text(
-                                  '¿Estás seguro de que quieres eliminar esta materia?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('Cancelar'),
-                                  onPressed: () {
-                                    // Simplemente cierra el diálogo
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text('Eliminar'),
-                                  onPressed: () {
-                                    // Eliminar la materia y actualizar la lista
-                                    DBMateria.delete(materias[index])
-                                        .then((value) {
-                                      mensaje("materia eliminada correctamente",
-                                          Colors.red);
-                                      cargarLista();
-                                      // Cerrar el diálogo
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        materias[index].nombre,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.pink.shade900,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'Docente: ${materias[index].docente}',
+                        style: const TextStyle(fontSize: 14),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'Semestre: ${materias[index].semestre}',
+                        style: const TextStyle(fontSize: 10),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           );
         },
