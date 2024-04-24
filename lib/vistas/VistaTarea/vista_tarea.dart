@@ -1,6 +1,5 @@
 import 'package:dam_u3_practica2_tarea/controlador/db_tarea.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia_tarea.dart';
-import 'package:dam_u3_practica2_tarea/vistas/Materia/crearMateria.dart';
 import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/crear_tarea.dart';
 import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/editar_tarea.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +12,9 @@ class VistaTarea extends StatefulWidget {
 }
 
 class _VistaTareaState extends State<VistaTarea> {
-  List<MateriaTarea> tareas =[];
-  @override
+  List<MateriaTarea> tareas = [];
 
+  @override
   void initState() {
     super.initState();
     cargarLista();
@@ -23,16 +22,17 @@ class _VistaTareaState extends State<VistaTarea> {
 
   void cargarLista() async {
     List<MateriaTarea> listatareas = await DBTarea.readAllWithMateria();
-      setState(() {
-        tareas = listatareas;
-      });
+    setState(() {
+      tareas = listatareas;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestión de Tareas', style: TextStyle(color: Colors.white)),
+        title: const Text('Gestión de Tareas',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.pink.shade900,
         actions: <Widget>[
           IconButton(
@@ -57,7 +57,8 @@ class _VistaTareaState extends State<VistaTarea> {
         itemCount: tareas.length,
         itemBuilder: (context, index) {
           return Dismissible(
-            key: UniqueKey(), // Se recomienda usar UniqueKey para evitar problemas con el estado
+            key: UniqueKey(),
+            // Se recomienda usar UniqueKey para evitar problemas con el estado
             onDismissed: (direction) {
               DBTarea.delete(tareas[index].idtarea).then((value) {
                 mensaje("Tarea eliminada correctamente", Colors.red);
@@ -66,20 +67,27 @@ class _VistaTareaState extends State<VistaTarea> {
             },
             background: Container(color: Colors.red),
             child: Card(
-              clipBehavior: Clip.antiAlias, // Añade esto para un mejor efecto visual al deslizar
+              clipBehavior: Clip.antiAlias,
+              // Añade esto para un mejor efecto visual al deslizar
               elevation: 5,
               child: InkWell(
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const EditarTarea()));
+                          builder: (context) => EditarTarea(
+                                idtarea: tareas[index].idtarea,
+                              ))).then((value) => cargarLista());
                 }, // Agrega una acción al tocar la tarjeta
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch, // Alineación horizontal
-                  mainAxisAlignment: MainAxisAlignment.start, // Alineación vertical
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  // Alineación horizontal
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  // Alineación vertical
                   children: [
-                    const SizedBox(height: 35,),
+                    const SizedBox(
+                      height: 35,
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
@@ -87,12 +95,13 @@ class _VistaTareaState extends State<VistaTarea> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
-                            color: Colors.pink.shade900
-                        ),
+                            color: Colors.pink.shade900),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
@@ -134,6 +143,7 @@ class _VistaTareaState extends State<VistaTarea> {
       ),
     );
   }
+
   void mensaje(String texto, Color color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

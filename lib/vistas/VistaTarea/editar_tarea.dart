@@ -1,18 +1,22 @@
+import 'package:dam_u3_practica2_tarea/controlador/db_materia.dart';
 import 'package:dam_u3_practica2_tarea/controlador/db_tarea.dart';
-import 'package:dam_u3_practica2_tarea/modelo/materia_tarea.dart';
+import 'package:dam_u3_practica2_tarea/modelo/materia.dart';
 import 'package:dam_u3_practica2_tarea/modelo/tarea.dart';
 import 'package:flutter/material.dart';
 
 class EditarTarea extends StatefulWidget {
-  const EditarTarea({super.key});
+  const EditarTarea({super.key, required this.idtarea});
+
+  final int idtarea;
 
   @override
   State<EditarTarea> createState() => _EditarTareaState();
 }
 
 class _EditarTareaState extends State<EditarTarea> {
-  List<MateriaTarea> tareas = [];
-  String? _materiaseleccionado;
+  Tarea tarea =
+      Tarea(idtarea: 0, idmateria: '', f_entrega: '', descripcion: '');
+  List<Materia> materias = [];
   final _fechaentrega = TextEditingController();
   final _descripcion = TextEditingController();
   String? idMateria;
@@ -22,11 +26,33 @@ class _EditarTareaState extends State<EditarTarea> {
   final Color negro = Colors.black;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    cargarDatos();
+  }
+
+  void cargarDatos() async {
+    Tarea tarea = await DBTarea.readOne(widget.idtarea);
+    List<Materia> materias = await DBMateria.readAll();
+
+    setState(() {
+      this.materias = materias;
+      this.tarea = tarea;
+      _fechaentrega.text = tarea.f_entrega;
+      _descripcion.text = tarea.descripcion;
+      idMateria = tarea.idmateria;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Editar Tarea", style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "Editar Tarea",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: Colors.pink.shade900,
       ),
@@ -34,6 +60,7 @@ class _EditarTareaState extends State<EditarTarea> {
         padding: const EdgeInsets.all(30),
         children: [
           DropdownButtonFormField(
+            value: idMateria,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -43,7 +70,7 @@ class _EditarTareaState extends State<EditarTarea> {
                 fillColor: blanco,
               ),
               hint: const Text("Selecciona una materia"),
-              items: tareas.map((e) {
+              items: materias.map((e) {
                 return DropdownMenuItem(
                     value: e.idmateria, child: Text(e.nombre));
               }).toList(),
@@ -57,16 +84,14 @@ class _EditarTareaState extends State<EditarTarea> {
             controller: _descripcion,
             decoration: InputDecoration(
               hintText: 'Descripcion de  tarea',
-              hintStyle: TextStyle(color: negro.withOpacity(0.6)
-              ),
+              hintStyle: TextStyle(color: negro.withOpacity(0.6)),
               filled: true,
               fillColor: blanco,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
-              prefixIcon: Icon(
-                  Icons.description, color: Colors.pink.shade900),
+              prefixIcon: Icon(Icons.description, color: Colors.pink.shade900),
             ),
           ),
           const SizedBox(height: 20),
@@ -74,16 +99,14 @@ class _EditarTareaState extends State<EditarTarea> {
             controller: _fechaentrega,
             decoration: InputDecoration(
               hintText: 'Fecha',
-              hintStyle: TextStyle(color: negro.withOpacity(0.6)
-              ),
+              hintStyle: TextStyle(color: negro.withOpacity(0.6)),
               filled: true,
               fillColor: blanco,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
-              prefixIcon: Icon(
-                  Icons.date_range, color: Colors.pink.shade900),
+              prefixIcon: Icon(Icons.date_range, color: Colors.pink.shade900),
             ),
             onTap: () async {
               // Mostrar picker de fecha
@@ -94,14 +117,17 @@ class _EditarTareaState extends State<EditarTarea> {
                 lastDate: DateTime(2100),
               );
               if (pickedDate != null) {
-                _fechaentrega.text = pickedDate.toString().substring(0, 10); // Formatea la fecha como yyyy-mm-dd
+                _fechaentrega.text = pickedDate
+                    .toString()
+                    .substring(0, 10); // Formatea la fecha como yyyy-mm-dd
               }
             },
           ),
           const SizedBox(height: 20),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              foregroundColor: blanco, backgroundColor: Colors.pink.shade900,
+              foregroundColor: blanco,
+              backgroundColor: Colors.pink.shade900,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -120,22 +146,21 @@ class _EditarTareaState extends State<EditarTarea> {
                 return;
               } else {
                 Tarea t = Tarea(
-                    idtarea: 0,
-                    idmateria: idMateria!,
+                    idtarea: widget.idtarea,
+                    idmateria: idMateria.toString(),
                     f_entrega: _fechaentrega.text,
-                    descripcion: _descripcion.text
-                );
+                    descripcion: _descripcion.text);
                 DBTarea.update(t).then((value) {
                   if (value == 0) {
-                    mensaje('INSERCION INCORRECTA', Colors.red);
+                    mensaje('ERROR DE ACTUALIZACION', Colors.red);
                     return;
                   }
-                  mensaje("SE HA INSERTADO LA TAREA", Colors.green);
+                  mensaje("REGISTRO ACTUALIZADO", Colors.green);
                   Navigator.pop(context);
                 });
               }
             },
-            child: const Text('Agregar'),
+            child: const Text('Aceptar'),
           ),
           const SizedBox(height: 10),
           TextButton(
@@ -156,6 +181,7 @@ class _EditarTareaState extends State<EditarTarea> {
       ),
     );
   }
+
   void mensaje(String texto, Color color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
