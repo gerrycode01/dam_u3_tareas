@@ -1,7 +1,7 @@
 import 'package:dam_u3_practica2_tarea/controlador/db_tarea.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia_tarea.dart';
-import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/crear_tarea.dart';
-import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/editar_tarea.dart';
+import 'package:dam_u3_practica2_tarea/vistas/tarea/crear_tarea.dart';
+import 'package:dam_u3_practica2_tarea/vistas/tarea/editar_tarea.dart';
 import 'package:flutter/material.dart';
 
 class VistaTarea extends StatefulWidget {
@@ -124,7 +124,7 @@ class _VistaTareaState extends State<VistaTarea> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        'Materia: ${tareas[index].nombre}',
+                        'materia: ${tareas[index].nombre}',
                         style: const TextStyle(fontSize: 11),
                         textAlign: TextAlign.center,
                       ),

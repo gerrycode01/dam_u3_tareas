@@ -60,7 +60,7 @@ class _EditarTareaState extends State<EditarTarea> {
         padding: const EdgeInsets.all(30),
         children: [
           DropdownButtonFormField(
-            value: idMateria,
+              value: idMateria,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),

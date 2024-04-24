@@ -1,8 +1,7 @@
 import 'package:dam_u3_practica2_tarea/query1.dart';
 import 'package:dam_u3_practica2_tarea/query2.dart';
-import 'package:dam_u3_practica2_tarea/vistas/Materia/VistaMateria.dart';
-import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/vista_tarea.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:dam_u3_practica2_tarea/vistas/materia/vista_materia.dart';
+import 'package:dam_u3_practica2_tarea/vistas/tarea/vista_tarea.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -43,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: Text("Sistema de Control de Tareas",
+        title: const Text("Sistema de Control de Tareas",
           style: TextStyle(
               color: Colors.white,
               fontSize: 17,
@@ -58,14 +57,14 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/fondofinal.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
                 child: ListView(
-                  children: [
+                  children: const [
 
                   ],
                 )
@@ -126,9 +125,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _dinamico() {
     switch (_currentIndex) {
       case 1:
-        return Query2();
+        return const Query2();
       default:
-        return Query1();
+        return const Query1();
     }
   }
 }

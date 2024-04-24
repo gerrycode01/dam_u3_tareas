@@ -3,14 +3,14 @@ import 'package:dam_u3_practica2_tarea/controlador/db_materia.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia.dart';
 import 'package:flutter/material.dart';
 
-class crearMateria extends StatefulWidget {
-  const crearMateria({super.key});
+class CrearMateria extends StatefulWidget {
+  const CrearMateria({super.key});
 
   @override
-  State<crearMateria> createState() => _crearMateriaState();
+  State<CrearMateria> createState() => _CrearMateriaState();
 }
 
-class _crearMateriaState extends State<crearMateria> {
+class _CrearMateriaState extends State<CrearMateria> {
   final List<Materia> materias = [];
   final _idmateria = TextEditingController();
   final _nombre = TextEditingController();
@@ -23,12 +23,13 @@ class _crearMateriaState extends State<crearMateria> {
   final Color negro = Colors.black;
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Registrar Materia", style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "Registrar materia",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: Colors.pink.shade900,
       ),
@@ -38,7 +39,7 @@ class _crearMateriaState extends State<crearMateria> {
           TextField(
             controller: _idmateria,
             decoration: InputDecoration(
-              hintText: 'Id Materia',
+              hintText: 'Id materia',
               hintStyle: TextStyle(color: negro.withOpacity(0.6)),
               filled: true,
               fillColor: blanco,
@@ -46,15 +47,15 @@ class _crearMateriaState extends State<crearMateria> {
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
-              prefixIcon: Icon(
-                  Icons.confirmation_number, color: Colors.pink.shade900),
+              prefixIcon:
+                  Icon(Icons.confirmation_number, color: Colors.pink.shade900),
             ),
           ),
           const SizedBox(height: 20),
           TextField(
             controller: _nombre,
             decoration: InputDecoration(
-              hintText: 'Nombre de la Materia',
+              hintText: 'Nombre de la materia',
               hintStyle: TextStyle(color: negro.withOpacity(0.6)),
               filled: true,
               fillColor: blanco,
@@ -83,8 +84,8 @@ class _crearMateriaState extends State<crearMateria> {
                 _semestreseleccionado = newValue;
               });
             },
-            items: Conexion.semestres.map<DropdownMenuItem<String>>((
-                String value) {
+            items: Conexion.semestres
+                .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value, style: TextStyle(color: negro)),
@@ -109,21 +110,22 @@ class _crearMateriaState extends State<crearMateria> {
           const SizedBox(height: 20),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              foregroundColor: blanco, backgroundColor: Colors.pink.shade900,
+              foregroundColor: blanco,
+              backgroundColor: Colors.pink.shade900,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
             onPressed: () {
-              if (_idmateria == null) {
+              if (_idmateria.text.isEmpty) {
                 mensaje('REGISTRA UN ID A LA MATERIA POR FAVOR', Colors.red);
                 return;
               }
-              if (_nombre == null) {
+              if (_nombre.text.isEmpty) {
                 mensaje('REGISTRA EL NOMBRE UNA MATERIA', Colors.red);
                 return;
               }
-              if (_docente == null) {
+              if (_docente.text.isEmpty) {
                 mensaje('REGISTRA UN DOCENTE POR FAVOR', Colors.red);
                 return;
               }
@@ -135,8 +137,7 @@ class _crearMateriaState extends State<crearMateria> {
                     idmateria: _idmateria.text,
                     nombre: _nombre.text,
                     semestre: _semestreseleccionado!,
-                    docente: _docente.text
-                );
+                    docente: _docente.text);
                 DBMateria.insert(ma).then((value) {
                   if (value == 0) {
                     mensaje('INSERCION INCORRECTA', Colors.red);

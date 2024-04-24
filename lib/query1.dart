@@ -1,5 +1,5 @@
 import 'package:dam_u3_practica2_tarea/controlador/conexion.dart';
-import 'package:dam_u3_practica2_tarea/vistas/Materia/crearMateria.dart';
+import 'package:dam_u3_practica2_tarea/vistas/tarea/crear_tarea.dart';
 import 'package:flutter/material.dart';
 import 'package:dam_u3_practica2_tarea/controlador/db_materia.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia.dart';
@@ -55,7 +55,8 @@ class _Query1State extends State<Query1> {
               onTap: () {
                 // Navegar a la nueva pantalla de detalles pasando la materia seleccionada
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => crearMateria(),
+                  builder: (context) =>
+                      CrearTarea(idmateria: materias[index].idmateria),
                 ));
               },
               child: Card(

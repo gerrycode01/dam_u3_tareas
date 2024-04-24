@@ -1,7 +1,7 @@
 import 'package:dam_u3_practica2_tarea/modelo/tarea.dart';
 import 'package:flutter/material.dart';
 import 'package:dam_u3_practica2_tarea/controlador/db_tarea.dart';
-import 'package:dam_u3_practica2_tarea/vistas/VistaTarea/crear_tarea.dart';
+import 'package:dam_u3_practica2_tarea/vistas/tarea/crear_tarea.dart';
 import 'package:intl/intl.dart';
 
 class Query2 extends StatefulWidget {
@@ -31,7 +31,8 @@ class _Query2State extends State<Query2> {
 
   void eliminarTareasAnteriores(List<Tarea> tareas, String fechaLimite) {
     DateTime fechaLimiteDateTime = DateFormat('yyyy-MM-dd').parse(fechaLimite);
-    tareas.removeWhere((tarea) => tarea.fechaEntrega.isBefore(fechaLimiteDateTime));
+    tareas.removeWhere(
+        (tarea) => tarea.fechaEntrega.isBefore(fechaLimiteDateTime));
   }
 
   @override

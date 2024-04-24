@@ -45,7 +45,7 @@ class _EditarMateriaState extends State<EditarMateria> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Editar Materia",
+          "Editar materia",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -57,7 +57,7 @@ class _EditarMateriaState extends State<EditarMateria> {
           TextField(
             controller: _nombre,
             decoration: InputDecoration(
-              hintText: 'Nombre de la Materia',
+              hintText: 'Nombre de la materia',
               hintStyle: TextStyle(color: negro.withOpacity(0.6)),
               filled: true,
               fillColor: blanco,

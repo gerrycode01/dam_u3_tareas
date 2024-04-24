@@ -1,8 +1,8 @@
-import 'package:dam_u3_practica2_tarea/vistas/Materia/editar_materia.dart';
+import 'package:dam_u3_practica2_tarea/vistas/materia/editar_materia.dart';
 import 'package:flutter/material.dart';
 import 'package:dam_u3_practica2_tarea/controlador/db_materia.dart';
 import 'package:dam_u3_practica2_tarea/modelo/materia.dart';
-import 'package:dam_u3_practica2_tarea/vistas/Materia/crearMateria.dart';
+import 'package:dam_u3_practica2_tarea/vistas/materia/crear_materia.dart';
 
 class VistaMateria extends StatefulWidget {
   const VistaMateria({super.key});
@@ -29,10 +29,10 @@ class _VistaMateriaState extends State<VistaMateria> {
 
   @override
   Widget build(BuildContext context) {
-    cargarLista();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestión de Materias', style: TextStyle(color: Colors.white)),
+        title: const Text('Gestión de Materias',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.pink.shade900,
         actions: <Widget>[
           IconButton(
@@ -40,7 +40,7 @@ class _VistaMateriaState extends State<VistaMateria> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const crearMateria()),
+                MaterialPageRoute(builder: (context) => const CrearMateria()),
               ).then((_) => cargarLista());
             },
           ),
@@ -111,7 +111,7 @@ class _VistaMateriaState extends State<VistaMateria> {
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
+                      icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () {
                         // Mostrar AlertDialog para confirmar
                         showDialog(
@@ -119,7 +119,8 @@ class _VistaMateriaState extends State<VistaMateria> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text('Confirmar'),
-                              content: const Text('¿Estás seguro de que quieres eliminar esta materia?'),
+                              content: const Text(
+                                  '¿Estás seguro de que quieres eliminar esta materia?'),
                               actions: <Widget>[
                                 TextButton(
                                   child: const Text('Cancelar'),
@@ -132,8 +133,10 @@ class _VistaMateriaState extends State<VistaMateria> {
                                   child: const Text('Eliminar'),
                                   onPressed: () {
                                     // Eliminar la materia y actualizar la lista
-                                    DBMateria.delete(materias[index]).then((value) {
-                                      mensaje("Materia eliminada correctamente", Colors.red);
+                                    DBMateria.delete(materias[index])
+                                        .then((value) {
+                                      mensaje("materia eliminada correctamente",
+                                          Colors.red);
                                       cargarLista();
                                       // Cerrar el diálogo
                                       Navigator.of(context).pop();
@@ -146,7 +149,6 @@ class _VistaMateriaState extends State<VistaMateria> {
                         );
                       },
                     ),
-
                   ],
                 ),
               ],
@@ -155,7 +157,6 @@ class _VistaMateriaState extends State<VistaMateria> {
         },
       ),
     );
-
   }
 
   void mensaje(String texto, Color color) {
