@@ -56,7 +56,7 @@ class _Query2State extends State<Query2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Materias pendientes',
+        title: const Text('Tareas pendientes',
             style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.pink.shade900,
         centerTitle: true,
